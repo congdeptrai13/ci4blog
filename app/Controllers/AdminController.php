@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Setting;
 use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Libraries\CIAuth;
@@ -206,7 +207,59 @@ class AdminController extends BaseController
 
     }
 
-    public function updateGeneralSettings(){
+    public function updateGeneralSettings()
+    {
+        $request = Services::request();
+        if ($request->isAJAX()) {
+            $validation = Services::validation();
+            $this->validate([
+                'blog_title' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "blog title is required"
+                    ]
+                ],
+                'blog_email' => [
+                    'rules' => 'required|valid_email',
+                    'errors' => [
+                        'required' => 'Blog email is required',
+                        'valid_email' => 'Invalid email address'
+                    ]
+                ]
+            ]);
 
+            if ($validation->run() === false) {
+                $errors = $validation->getErrors();
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'token' => csrf_hash(),
+                    'error' => $errors
+                ]);
+            } else {
+                $settings = new Setting();
+                $setting_id = $settings->asObject()->first()->id;
+                $update = $settings->where('id', $setting_id)->set([
+                    'blog_title' => $request->getVar('blog_title'),
+                    'blog_email' => $request->getVar('blog_email'),
+                    'blog_phone' => $request->getVar('blog_phone'),
+                    'blog_meta_keywords' => $request->getVar('blog_meta_keywords'),
+                    'blog_meta_description' => $request->getVar('blog_meta_description'),
+                ])->update();
+                if ($update) {
+                    return $this->response->setJSON([
+                        'status' => 1,
+                        'token' => csrf_hash(),
+                        'msg' => 'General settings have been updated successfully.'
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'status' => 0,
+                        'token' => csrf_hash(),
+                        'msg' => 'something went wrong.'
+                    ]);
+                }
+
+            }
+        }
     }
 }

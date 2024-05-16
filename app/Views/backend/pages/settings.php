@@ -41,14 +41,14 @@
         <div class="tab-content">
             <div class="tab-pane fade active show" id="general_settings" role="tabpanel">
                 <div class="pd-20">
-                    <form action="" method="post" id="general_settings_form">
+                    <form action="<?= route_to('update-general-settings') ?>" method="post" id="general_settings_form">
                         <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" class="ci_csrf_data">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">Blog title</label>
                                     <input type="text" name="blog_title" class="form-control"
-                                        placeholder="enter blog title">
+                                        placeholder="enter blog title" value="<?= get_settings()->blog_title ?>">
                                     <span class="text-danger error-text blog_title_error"></span>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                                 <div class="form-group">
                                     <label for="">Blog email</label>
                                     <input type="text" name="blog_email" class="form-control"
-                                        placeholder="enter blog email">
+                                        placeholder="enter blog email" value="<?= get_settings()->blog_email ?>">
                                     <span class="text-danger error-text blog_email_error"></span>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                 <div class="form-group">
                                     <label for="">Blog phone no</label>
                                     <input type="text" name="blog_phone" class="form-control"
-                                        placeholder="enter Blog phone no">
+                                        placeholder="enter Blog phone no" value="<?= get_settings()->blog_phone ?>">
                                     <span class="text-danger error-text blog_phone_error"></span>
                                 </div>
                             </div>
@@ -72,7 +72,8 @@
                                 <div class="form-group">
                                     <label for="">Blog meta keywords</label>
                                     <input type="text" name="blog_meta_keywords" class="form-control"
-                                        placeholder="enter Blog meta keywords">
+                                        placeholder="enter Blog meta keywords"
+                                        value="<?= get_settings()->blog_meta_keywords ?>">
                                     <span class="text-danger error-text blog_meta_keywords_error"></span>
                                 </div>
                             </div>
@@ -80,7 +81,8 @@
                                 <div class="form-group">
                                     <label for="">Blog meta description</label>
                                     <textarea cols="4" rows="3" name="blog_meta_description" class="form-control"
-                                        placeholder="write blog meta description"></textarea>
+                                        placeholder="write blog meta description"
+                                        value="<?= get_settings()->blog_meta_description ?>"></textarea>
                                     <span class="text-danger error-text blog_meta_description_error"></span>
                                 </div>
                             </div>
@@ -105,4 +107,47 @@
     </div>
 </div>
 
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+    $('#general_settings_form').on('submit', function (e) {
+        e.preventDefault();
+        //CSRF HASH
+        var csrfName = $('.ci_csrf_data').attr('name');
+        var csrfHash = $('.ci_csrf_data').val();
+        var form = this;
+        var formdata = new FormData(form);
+        formdata.append(csrfName, csrfHash);
+
+        $.ajax({
+            url: $(form).attr('action'),
+            method: $(form).attr('method'),
+            data: formdata,
+            processData: false,
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            beforeSend: function () {
+                toastr.remove();
+                $(form).find('span.error-text').text('');
+            },
+            success: function (response) {
+                $('.ci_csrf_data').val(response.token);
+                if ($.isEmptyObject(response.error)) {
+                    if (response.status === 1) {
+                        toastr.success(response.msg);
+                    } else {
+                        toastr.error(response.msg);
+
+                    }
+                } else {
+                    $.each(response.error, function (prefix, val) {
+                        $(form).find('span.' + prefix + '_error').text(val);
+                    })
+                }
+            }
+        })
+    })
+</script>
 <?= $this->endSection() ?>
