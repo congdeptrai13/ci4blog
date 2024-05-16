@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Validation\IsCurrentPasswordCorrect;
 use App\Validation\IsPasswordStrong;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
@@ -26,7 +27,8 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-        IsPasswordStrong::class
+        IsPasswordStrong::class,
+        IsCurrentPasswordCorrect::class
     ];
 
     /**
