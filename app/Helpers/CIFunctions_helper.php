@@ -2,6 +2,7 @@
 
 use App\Libraries\CIAuth;
 use App\Models\Setting;
+use App\Models\SocialMedia;
 use App\Models\User;
 
 if (!function_exists('get_user')) {
@@ -37,6 +38,30 @@ if (!function_exists('get_settings')) {
             return $new_settings_data;
         } else {
             return $settings_data;
+        }
+    }
+}
+
+if (!function_exists('get_social_media')) {
+    function get_social_media()
+    {
+        $social_media = new SocialMedia();
+        $social_media_data = $social_media->asObject()->first();
+
+        if (!$social_media_data) {
+            $data = array(
+                'facebook_url' => null,
+                'twitter_url' => null,
+                'instagram_url' => null,
+                'youtube_url' => null,
+                'github_url' => null,
+                'linkedin_url' => null
+            );
+            $social_media->save($data);
+            $new_social_media_data = $social_media->asObject()->first();
+            return $new_social_media_data;
+        } else {
+            return $social_media_data;
         }
     }
 }

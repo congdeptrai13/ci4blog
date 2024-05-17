@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\Setting;
+use App\Models\SocialMedia;
 use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Libraries\CIAuth;
@@ -260,6 +261,180 @@ class AdminController extends BaseController
                 }
 
             }
+        }
+    }
+
+    public function updateBlogLogo()
+    {
+        $request = Services::request();
+
+        if ($request->isAJAX()) {
+            $path = 'images/blogs/';
+            $file = $request->getFile('blog_logo');
+            $settings = new Setting();
+            $setting_data = $settings->asObject()->first();
+            $old_blog_logo = $setting_data->blog_logo;
+            $new_filename = 'CI4blog_logo' . $file->getRandomName();
+            if ($file->move($path, $new_filename)) {
+                if ($old_blog_logo != null && file_exists($path . $old_blog_logo)) {
+                    unlink($path . $old_blog_logo);
+                }
+            }
+
+            $update = $settings->where('id', $setting_data->id)->set([
+                'blog_logo' => $new_filename
+            ])->update();
+
+            if ($update) {
+                return $this->response->setJSON([
+                    'status' => 1,
+                    'token' => csrf_hash(),
+                    'msg' => 'Done!, CI4Blog logo has been successfully updated.'
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'token' => csrf_hash(),
+                    'msg' => 'Something went wrong.'
+                ]);
+            }
+
+        } else {
+            return $this->response->setJSON([
+                'status' => 0,
+                'token' => csrf_hash(),
+                'msg' => 'Something went wrong on uploading new logo.'
+            ]);
+        }
+    }
+
+    public function updateBlogFavicon()
+    {
+
+        $request = Services::request();
+        if ($request->isAJAX()) {
+            $path = 'images/blogs/';
+            $file = $request->getFile('blog_favicon');
+            $settings = new Setting();
+            $setting_data = $settings->asObject()->first();
+            $old_blog_favicon = $setting_data->blog_favicon;
+            $new_filename = 'CI4Blog_favicon' . $file->getRandomName();
+            if ($file->move($path, $new_filename)) {
+                if ($old_blog_favicon !== null && file_exists($path . $old_blog_favicon)) {
+                    unlink($path . $old_blog_favicon);
+                }
+                $update = $settings->where('id', $setting_data->id)->set([
+                    'blog_favicon' => $new_filename
+                ])->update();
+                if ($update) {
+                    return $this->response->setJSON([
+                        'status' => 1,
+                        'token' => csrf_hash(),
+                        'msg' => "Done!, CI4Blog favicon has been successfully updated."
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'status' => 0,
+                        'token' => csrf_hash(),
+                        'msg' => 'Something went wrong.'
+                    ]);
+                }
+            }
+        } else {
+            return $this->response->setJSON([
+                'status' => 0,
+                'token' => csrf_hash(),
+                'msg' => 'Something went wrong on uploading new favicon'
+            ]);
+        }
+    }
+
+    public function updateSocialMedia()
+    {
+        $request = Services::request();
+        if ($request->isAJAX()) {
+            $validation = Services::validation();
+            $this->validate([
+                'facebook_url' => [
+                    'rules' => 'permit_empty|valid_url_strict',
+                    'errors' => [
+                        'valid_url_strict' => 'Invalid Facebook page URL'
+                    ]
+                ],
+                'twitter_url' => [
+                    'rules' => 'permit_empty|valid_url_strict',
+                    'errors' => [
+                        'valid_url_strict' => 'Invalid Twitter page URL'
+                    ]
+                ],
+                'instagram_url' => [
+                    'rules' => 'permit_empty|valid_url_strict',
+                    'errors' => [
+                        'valid_url_strict' => 'Invalid Instagram page URL'
+                    ]
+                ],
+                'youtube_url' => [
+                    'rules' => 'permit_empty|valid_url_strict',
+                    'errors' => [
+                        'valid_url_strict' => 'Invalid Youtube page URL'
+                    ]
+                ],
+                'github_url' => [
+                    'rules' => 'permit_empty|valid_url_strict',
+                    'errors' => [
+                        'valid_url_strict' => 'Invalid Github page URL'
+                    ]
+                ],
+                'linkedin_url' => [
+                    'rules' => 'permit_empty|valid_url_strict',
+                    'errors' => [
+                        'valid_url_strict' => 'Invalid Linkedin page URL'
+                    ]
+                ],
+            ]);
+
+            if ($validation->run() === false) {
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'token' => csrf_hash(),
+                    'error' => $validation->getErrors()
+                ]);
+            } else {
+
+                $social_media = new SocialMedia();
+                $social_media_id = $social_media->asObject()->first()->id;
+
+                $update = $social_media->where('id', $social_media_id)->set([
+                    'facebook_url' => $request->getVar('facebook_url'),
+                    'twitter_url' => $request->getVar('twitter_url'),
+                    'instagram_url' => $request->getVar('instagram_url'),
+                    'youtube_url' => $request->getVar('youtube_url'),
+                    'github_url' => $request->getVar('github_url'),
+                    'linkedin_url' => $request->getVar('linkedin_url'),
+                ])->update();
+
+                if ($update) {
+                    return $this->response->setJSON([
+                        'status' => 1,
+                        'token' => csrf_hash(),
+                        'msg' => 'Done!, Blog social media have been successfully updated.'
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'status' => 0,
+                        'token' => csrf_hash(),
+                        'msg' => 'Something went wrong on updating blog social media'
+                    ]);
+                }
+
+
+            }
+        } else {
+            return $this->response->setJSON([
+                'status' => 0,
+                'token' => csrf_hash(),
+                'msg' => "Something went wrong."
+            ]);
         }
     }
 }

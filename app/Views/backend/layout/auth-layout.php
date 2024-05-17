@@ -7,9 +7,8 @@
     <title>DeskApp - Bootstrap Admin Dashboard HTML Template</title>
 
     <!-- Site favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/backend/vendors/images/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/backend/vendors/images/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/backend/vendors/images/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="<?= get_settings()->blog_favicon !== null ? '/images/blogs/' . get_settings()->blog_favicon : "" ?>" />
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -31,7 +30,9 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="brand-logo">
                 <a href="login.html">
-                    <img src="/backend/vendors/images/deskapp-logo.svg" alt="" />
+                    <img
+                        src="<?= get_settings()->blog_logo !== null ? '/images/blogs/' . get_settings()->blog_logo : "" ?>" />"
+                    alt="" />
                 </a>
             </div>
             <div class="login-menu">
