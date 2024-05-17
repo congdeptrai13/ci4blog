@@ -16,14 +16,28 @@ use PSpell\Config;
 class AdminController extends BaseController
 {
 
-    protected $helpers = ['url', 'form', 'CIMail', 'CIFunctions'];
+
+
+    protected $helpers = ['url', 'form', 'CIMail', 'CIFunctions', 'CISiteSource'];
+
     public function index()
     {
         //
         $data = [
             'pageTitle' => 'Dashboard',
+            // 'loadJS' => $this->LoadJS('Dashboard')
         ];
         return view('backend/pages/home', $data);
+    }
+
+    // private function __construct()
+    // {
+
+    // }
+
+    private function LoadJS($pageTitle)
+    {
+        return RunQueryJsCSSPage(array('/assets/js/' . strtolower($pageTitle) . '.js'), 'js');   /*Position Add Js*/
     }
 
     public function logoutHandler()
@@ -35,7 +49,8 @@ class AdminController extends BaseController
     public function profile()
     {
         $data = array(
-            'pageTitle' => 'Profile'
+            'pageTitle' => 'Profile',
+            'loadJS' => $this->LoadJS('Profile')
         );
         return view('backend/pages/profile', $data);
     }
@@ -81,7 +96,7 @@ class AdminController extends BaseController
                 }
             }
         } else {
-
+            return json_encode(['status' => 0, 'msg' => 'Something went wrong']);
         }
     }
 
@@ -202,7 +217,8 @@ class AdminController extends BaseController
     public function settings()
     {
         $data = [
-            'pageTitle' => 'Settings'
+            'pageTitle' => 'Settings',
+            'loadJS' => $this->LoadJS('Settings')
         ];
         return view('backend/pages/settings', $data);
 

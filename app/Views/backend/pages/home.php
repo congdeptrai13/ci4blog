@@ -1,4 +1,4 @@
 <?= $this->extend('backend/layout/pages-layout') ?>
 <?= $this->section('content') ?>
-    dashboard admin
+dashboard admin
 <?= $this->endSection() ?>
