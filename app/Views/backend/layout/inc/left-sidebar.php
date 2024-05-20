@@ -20,7 +20,7 @@
                 </li>
 
                 <li>
-                    <a href="<?= route_to('admin.home') ?>" class="dropdown-toggle no-arrow">
+                    <a href="<?= route_to('categories') ?>" class="dropdown-toggle no-arrow">
                         <span class="micon dw dw-list"></span><span class="mtext">Categories</span>
                     </a>
                 </li>

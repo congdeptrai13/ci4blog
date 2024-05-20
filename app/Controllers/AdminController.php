@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Category;
 use App\Models\Setting;
 use App\Models\SocialMedia;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -13,13 +14,20 @@ use App\Models\User;
 use Config\Services;
 use PSpell\Config;
 
+use SSP;
+
 class AdminController extends BaseController
 {
 
 
 
     protected $helpers = ['url', 'form', 'CIMail', 'CIFunctions', 'CISiteSource'];
-
+    protected $db;
+    public function __construct()
+    {
+        require APPPATH . "/ThirdParty/ssp.php";
+        $this->db = db_connect();
+    }
     public function index()
     {
         //
@@ -451,6 +459,217 @@ class AdminController extends BaseController
                 'token' => csrf_hash(),
                 'msg' => "Something went wrong."
             ]);
+        }
+    }
+
+    public function categories()
+    {
+        $data = [
+            'pageTitle' => 'Categories',
+            'loadJS' => $this->LoadJS('Categories')
+        ];
+        return view('backend/pages/categories', $data);
+    }
+
+    public function addCategories()
+    {
+        $request = Services::request();
+        if ($request->isAJAX()) {
+            $validation = Services::validation();
+            $this->validate([
+                'category_name' => [
+                    'rules' => 'required|is_unique[categories.name]',
+                    'errors' => [
+                        'required' => 'category name is required',
+                        'is_unique' => 'Category name is already exists'
+                    ]
+                ]
+            ]);
+            if ($validation->run() === false) {
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'token' => csrf_hash(),
+                    'error' => $validation->getErrors()
+                ]);
+            } else {
+                $category = new Category();
+                $save = $category->save(['name' => $request->getVar('category_name')]);
+                if ($save) {
+                    return $this->response->setJSON([
+                        'status' => 1,
+                        'token' => csrf_hash(),
+                        'msg' => 'New category has been successfully added'
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'status' => 0,
+                        'token' => csrf_hash(),
+                        'msg' => 'New category has been successfully added'
+                    ]);
+                }
+
+            }
+        } else {
+            return $this->response->setJSON([
+                'status' => 0,
+                'token' => csrf_hash(),
+                'msg' => 'something went wrong'
+            ]);
+        }
+    }
+
+    public function getCategories()
+    {
+        // db details
+        $dbDetails = array(
+            'host' => $this->db->hostname,
+            'user' => $this->db->username,
+            'pass' => $this->db->password,
+            'db' => $this->db->database
+        );
+        $table = 'categories';
+        $primaryKey = 'id';
+        $columns = array(
+            array(
+                'db' => 'id',
+                'dt' => 0
+            ),
+            array(
+                'db' => 'name',
+                'dt' => 1
+            ),
+            array(
+                'db' => 'id',
+                'dt' => 2,
+                'formatter' => function ($d, $row) {
+                    return "(x) will be added later";
+                }
+            ),
+            array(
+                'db' => 'id',
+                'dt' => 3,
+                'formatter' => function ($d, $row) {
+                    return "
+                    <div class='btn-group'>
+                        <button class='btn btn-sm btn-link p-0 mx-1 editCategoryBtn' data-id='" . $row['id'] . "' data-route='" . route_to('get-category') . "'>Edit</button>
+                        <button class='btn btn-sm btn-link p-0 mx-1 deleteCategoryBtn' data-id='" . $row['id'] . "' data-route='" . route_to('delete-category') . "'>Delete</button>
+                    </div>
+                    ";
+                }
+            ),
+            array(
+                'db' => 'ordering',
+                'dt' => 4
+            )
+        );
+        return json_encode(
+            SSP::simple($_GET, $dbDetails, $table, $primaryKey, $columns)
+        );
+    }
+
+    public function getCategory()
+    {
+        $request = Services::request();
+        if ($request->isAJAX()) {
+            $id = $request->getVar('category_id');
+            $category = new Category();
+            $category_data = $category->find($id);
+            return $this->response->setJSON(['data' => $category_data]);
+
+        }
+    }
+
+    public function updateCategories()
+    {
+        $request = Services::request();
+
+        if ($request->isAJAX()) {
+            $id = $request->getVar('category_id');
+            $validation = Services::validation();
+            $this->validate([
+                'category_name' => [
+                    'rules' => 'required|is_unique[categories.name,id,' . $id . ']',
+                    'errors' => [
+                        'required' => 'Category name is required',
+                        'is_unique' => 'Category name is already exists'
+                    ]
+                ]
+            ]);
+            if ($validation->run() === false) {
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'token' => csrf_hash(),
+                    'error' => $validation->getErrors()
+                ]);
+            } else {
+                $category = new Category();
+                $update = $category->where('id', $id)->set([
+                    'name' => $request->getVar('category_name')
+                ])->update();
+                if ($update) {
+                    return $this->response->setJSON([
+                        'status' => 1,
+                        'token' => csrf_hash(),
+                        'msg' => "Done!, update Category success"
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'status' => 0,
+                        'token' => csrf_hash(),
+                        'msg' => "something went wrong with update category"
+                    ]);
+                }
+            }
+        } else {
+            return $this->response->setJSON([
+                'status' => 0,
+                'token' => csrf_hash(),
+                'msg' => "something went wrong"
+            ]);
+        }
+    }
+
+    public function deleteCategory()
+    {
+        $request = Services::request();
+        if ($request->isAJAX()) {
+            $id = $request->getVar('category_id');
+            $category = new Category();
+
+            //check it's related sub category in fure video
+
+            //check it's related posts through it's subcategories in future video
+
+            //delete category 
+            $delete = $category->where('id', $id)->delete();
+            $delete = $category->delete($id);
+
+            if ($delete) {
+                return $this->response->setJSON([
+                    'status' => 1,
+                    'msg' => 'category has been successfully deleted.'
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'msg' => 'Something went wrong'
+                ]);
+            }
+        }
+    }
+
+    public function reorderCategories()
+    {
+        $request = Services::request();
+        if ($request->isAJAX()) {
+            $positions = $request->getVar('positions');
+            $category = new Category();
+            foreach ($positions as $position) {
+                $index = $position[0];
+                $newPosition = $position[1];
+                $category->where('id', $index)->set(['ordering' => $newPosition])->update();
+            }
+            return $this->response->setJSON(['status' => 1, 'msg' => 'Categories ordering has been successfully updated']);
         }
     }
 }
