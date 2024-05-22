@@ -35,6 +35,17 @@ $routes->group('admin', static function ($routes) {
         $routes->post('update-categories', 'AdminController::updateCategories', ['as' => 'update-categories']);
         $routes->get('delete-category', 'AdminController::deleteCategory', ['as' => 'delete-category']);
         $routes->get('reorder-categories', 'AdminController::reorderCategories', ['as' => 'reorder-categories']);
+        $routes->get('get-parent-categories', 'AdminController::getParentCategories', ['as' => 'get-parent-categories']);
+        $routes->post('add-subcategory', 'AdminController::addSubCategory', ['as' => 'add-subcategory']);
+        $routes->get('get-subcategories', 'AdminController::getSubCategories', ['as' => 'get-subcategories']);
+        $routes->get('get-subcategory', 'AdminController::getSubCategory', ['as' => 'get-subcategory']);
+        $routes->post('update-subcategory', 'AdminController::updateSubCategory', ['as' => 'update-subcategory']);
+        $routes->get('reorder-subcategories', 'AdminController::reorderSubCategories', ['as' => 'reorder-subcategories']);
+        $routes->get('delete-subcategory', 'AdminController::deleteSubCategory', ['as' => 'delete-subcategory']);
+
+        $routes->group('posts', static function ($routes) {
+            $routes->get('new-post', 'AdminController::addPost', ['as' => 'new-post']);
+        });
     });
     $routes->group('', ['filter' => 'cifilter:guest'], static function ($routes) {
         // $routes->view('example-auth', 'example-auth');

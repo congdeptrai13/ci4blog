@@ -73,7 +73,9 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-sm table-borderless table-hover table-stripe">
+                <table class="table table-sm table-borderless table-hover table-stripe" id="subcategories-table"
+                    data-route-reorder="<?= route_to('reorder-subcategories') ?>"
+                    data-route-get-subcategory="<?= route_to('get-subcategories') ?>">
                     <thead>
                         <tr>
                             <td scope="col">#</td>
@@ -81,16 +83,11 @@
                             <td scope="col">Parent Category</td>
                             <td scope="col">N. of posts=(s)</td>
                             <td scope="col">Action</td>
+                            <th scope="col">Ordering</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td scope="row">1</td>
-                            <td>-----</td>
-                            <td>-----</td>
-                            <td>-----</td>
-                            <td>-----</td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -101,6 +98,8 @@
 <?php
 include ('modals/category-modal-form.php');
 include ('modals/edit-category-modal-form.php');
+include ('modals/subcategory-modal-form.php');
+include ('modals/edit-subcategory-modal-form.php');
 ?>
 
 <?= $this->section('stylesheets') ?>

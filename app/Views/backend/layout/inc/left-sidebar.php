@@ -31,7 +31,7 @@
                     </a>
                     <ul class="submenu">
                         <li><a href="basic-table.html">All Posts</a></li>
-                        <li><a href="datatable.html">Add new</a></li>
+                        <li><a href="<?= route_to('new-post') ?>">Add new</a></li>
                     </ul>
                 </li>
                 <li>
