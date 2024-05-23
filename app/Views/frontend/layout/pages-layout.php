@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="en-us">
 
 <head>
     <meta charset="utf-8">
-    <title>Reporter - HTML Blog Template</title>
+    <title><?= isset($pageTitle) ? $pageTitle : "CI4Blog" ?></title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
     <meta name="description" content="This is meta description">
     <meta name="author" content="Themefisher">
-    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <?= $this->renderSection('page_meta') ?>
+    <link rel="shortcut icon" href="images/blogs/<?= get_settings()->blog_favicon ?>" type="image/x-icon">
 
     <!-- theme meta -->
     <meta name="theme-name" content="reporter" />
@@ -29,18 +23,15 @@
         rel="stylesheet">
 
     <!-- # CSS Plugins -->
-    <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="frontend/plugins/bootstrap/bootstrap.min.css">
 
     <!-- # Main Style Sheet -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="frontend/css/style.css">
     <?= $this->renderSection('stylesheets') ?>
 </head>
 
 <body>
-
-    <!-- //header  -->
-    <?= include ('inc/header.php') ?>
-    <!-- //header  -->
+    <?php include ('inc/header.php') ?>
 
     <main>
         <section class="section">
@@ -51,17 +42,16 @@
     </main>
 
     <!-- footer  -->
-    <?= include ('inc/footer.php') ?>
+    <?php include ('inc/footer.php') ?>
     <!-- footer  -->
 
     <!-- # JS Plugins -->
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <script src="plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="frontend/plugins/jquery/jquery.min.js"></script>
+    <script src="frontend/plugins/bootstrap/bootstrap.min.js"></script>
 
     <!-- Main Script -->
     <script src="js/script.js"></script>
     <?= $this->renderSection('scripts') ?>
-
 </body>
 
 </html>

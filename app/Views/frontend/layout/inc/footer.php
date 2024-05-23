@@ -3,8 +3,9 @@
         <div class="row">
             <div class="col-lg-10 mx-auto text-center">
                 <a class="d-inline-block mb-4 pb-2" href="index.html">
-                    <img loading="prelaod" decoding="async" class="img-fluid" src="images/logo-white.png"
-                        alt="Reporter Hugo">
+                    <img loading="prelaod" decoding="async" class="img-fluid"
+                        src="images/blogs/<?= get_settings()->blog_logo ?>" alt="Reporter Hugo"
+                        style="max-width: 170px;">
                 </a>
                 <ul class="p-0 d-flex navbar-footer mb-0 list-unstyled">
                     <li class="nav-item my-0"> <a class="nav-link" href="about.html">About</a></li>
@@ -18,6 +19,9 @@
             </div>
         </div>
     </div>
-    <div class="copyright bg-dark content">Designed &amp; Developed By <a
-            href="https://themefisher.com/">Themefisher</a></div>
+    <div class="copyright bg-dark content">
+        &copy; Copyright
+        <script>document.write(new Date().getFullYear())</script> - <?= get_settings()->blog_title ?>. All rights
+        reserved.
+    </div>
 </footer>
