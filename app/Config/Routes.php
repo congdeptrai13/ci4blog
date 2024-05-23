@@ -8,7 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 
 //will enable config for you access through uri matches with controller::method
 // $routes->setAutoRoute('true');
-$routes->get('/', 'Home::index');
+$routes->get('/', 'BlogController::index');
 
 
 
@@ -45,6 +45,13 @@ $routes->group('admin', static function ($routes) {
 
         $routes->group('posts', static function ($routes) {
             $routes->get('new-post', 'AdminController::addPost', ['as' => 'new-post']);
+            $routes->post('create-post', 'AdminController::createPost', ['as' => 'create-post']);
+            $routes->get('/', 'AdminController::allPosts', ['as' => 'all-posts']);
+            $routes->get('get-posts', 'AdminController::getPosts', ['as' => 'get-posts']);
+            $routes->get('edit-post/(:any)', 'AdminController::editPost/$1', ['as' => 'edit-post']);
+            $routes->post('update-post', 'AdminController::updatePost', ['as' => 'update-post']);
+            $routes->get('delete-post', 'AdminController::deletePost', ['as' => 'delete-post']);
+
         });
     });
     $routes->group('', ['filter' => 'cifilter:guest'], static function ($routes) {

@@ -74,6 +74,7 @@
             </div>
             <div class="card-body">
                 <table class="table table-sm table-borderless table-hover table-stripe" id="subcategories-table"
+                    data-route="<?= route_to('get-parent-categories') ?>"
                     data-route-reorder="<?= route_to('reorder-subcategories') ?>"
                     data-route-get-subcategory="<?= route_to('get-subcategories') ?>">
                     <thead>

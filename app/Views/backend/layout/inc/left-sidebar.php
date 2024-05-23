@@ -14,24 +14,29 @@
         <div class="sidebar-menu">
             <ul id="accordion-menu">
                 <li>
-                    <a href="<?= route_to('admin.home') ?>" class="dropdown-toggle no-arrow">
+                    <a href="<?= route_to('admin.home') ?>"
+                        class="dropdown-toggle no-arrow <?= current_route_name() === 'admin.home' ? "active" : "" ?>">
                         <span class="micon dw dw-home"></span><span class="mtext">Home</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="<?= route_to('categories') ?>" class="dropdown-toggle no-arrow">
+                    <a href="<?= route_to('categories') ?>"
+                        class="dropdown-toggle no-arrow <?= current_route_name() === 'categories' ? "active" : "" ?>">
                         <span class="micon dw dw-list"></span><span class="mtext">Categories</span>
                     </a>
                 </li>
 
                 <li class="dropdown">
-                    <a href="javascript:;" class="dropdown-toggle">
+                    <a href="javascript:;"
+                        class="dropdown-toggle <?= current_route_name() === 'all-posts' ? "active" : "" ?> <?= current_route_name() === 'new-post' ? "active" : "" ?> <?= current_route_name() === 'edit-post' ? "active" : "" ?>">
                         <span class="micon bi bi-table"></span><span class="mtext">Posts</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="basic-table.html">All Posts</a></li>
-                        <li><a href="<?= route_to('new-post') ?>">Add new</a></li>
+                        <li><a href="<?= route_to('all-posts') ?>"
+                                class="<?= current_route_name() === 'all-posts' ? "active" : "" ?>">All Posts</a></li>
+                        <li><a href="<?= route_to('new-post') ?>"
+                                class="<?= current_route_name() === 'new-post' ? "active" : "" ?>">Add new</a></li>
                     </ul>
                 </li>
                 <li>
@@ -41,14 +46,14 @@
                     <div class="sidebar-small-cap">Settings</div>
                 </li>
                 <li>
-                    <a href="<?= route_to('admin.profile') ?>" class="dropdown-toggle no-arrow">
+                    <a href="<?= route_to('admin.profile') ?>" class="dropdown-toggle no-arrow <?= current_route_name() === 'admin.profile' ? "active" : "" ?> ">
                         <span class="micon dw dw-user"></span>
                         <span class="mtext">Profile
                         </span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= route_to('settings') ?>" class="dropdown-toggle no-arrow">
+                    <a href="<?= route_to('settings') ?>" class="dropdown-toggle no-arrow <?= current_route_name() === 'settings' ? "active" : "" ?> ">
                         <span class="micon dw dw-settings"></span>
                         <span class="mtext">Settings
                         </span>

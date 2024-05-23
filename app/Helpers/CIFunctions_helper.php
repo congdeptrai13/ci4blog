@@ -4,6 +4,7 @@ use App\Libraries\CIAuth;
 use App\Models\Setting;
 use App\Models\SocialMedia;
 use App\Models\User;
+use Config\Services;
 
 if (!function_exists('get_user')) {
     function get_user()
@@ -63,5 +64,14 @@ if (!function_exists('get_social_media')) {
         } else {
             return $social_media_data;
         }
+    }
+}
+
+if (!function_exists('current_route_name')) {
+    function current_route_name()
+    {
+        $router = Services::router();
+        $route_name = $router->getMatchedRouteOptions()['as'];
+        return $route_name;
     }
 }

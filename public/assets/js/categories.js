@@ -217,8 +217,10 @@ $(document).on('click', '#add_sub_category_btn', function (e) {
     modal.find('.modal-footer .button_save').html(modal_btn_text);
     var select = modal.find('select[name="parent_cat"]');
     var url = $('#subcategories-table').attr('data-route');
+    console.log(url);
     $.get(url, { parent_category_id: null }, function (response) {
         if (response.status === 1) {
+            console.log('12321321');
             select.find('option').remove();
             select.html(response.data);
             modal.modal('show');
@@ -395,7 +397,7 @@ $(document).on('click', '.deleteSubCategoryBtn', function (e) {
                     subcategories_DT.ajax.reload();
                     toastr.success(response.msg);
                 } else {
-                    toastr.error(response.smg);
+                    toastr.error(response.msg);
                 }
             })
         }

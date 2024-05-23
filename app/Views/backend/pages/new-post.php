@@ -1,8 +1,13 @@
+<?php
+
+use App\Libraries\CIAuth;
+
+?>
 <?= $this->extend('backend/layout/pages-layout') ?>
 <?= $this->section('content') ?>
 <div class="page-header">
     <div class="row">
-        <div class="col-md-12 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="title">
                 <h4>Add Post</h4>
             </div>
@@ -17,11 +22,18 @@
                 </ol>
             </nav>
         </div>
+        <div class="col-md-6 col-sm-12 text-right">
+            <div class="dropdown">
+                <a class="btn btn-primary" href="<?= route_to('all-posts') ?>">View Posts</a>
+            </div>
+        </div>
     </div>
 </div>
 
-<form action="" method="post" enctype="multipart/form-data" autocomplete="off" id="addPostForm">
+<form action="<?= route_to('create-post') ?>" method="post" enctype="multipart/form-data" autocomplete="off"
+    id="addPostForm">
     <div class="row">
+        <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" class="ci_csrf_data">
         <div class="col-md-9">
             <div class="card card-box mb-2">
                 <div class="card-body">
@@ -32,8 +44,8 @@
                     </div>
                     <div class="form-group">
                         <div class="label"><b>Content</b></div>
-                        <textarea name="content" class="form-control" cols="30" rows="10"
-                            placeholder="Type..."></textarea>
+                        <textarea name="content" id="content" class="form-control" cols="30" rows="10"
+                            placeholder="Type..." data-id="<?= CIAuth::id() ?>"></textarea>
                         <span class="text-danger text-error content_error"></span>
                     </div>
                 </div>
@@ -95,7 +107,7 @@
                         <div class="custom-control custom-radio mb-5">
                             <input type="radio" name="visibility" id="customRadio2" class="custom-control-input"
                                 value="0">
-                            <label for="customRadio2" class="custom-control-label">Public</label>
+                            <label for="customRadio2" class="custom-control-label">Private</label>
                         </div>
                     </div>
                 </div>
@@ -114,5 +126,6 @@
 <?= $this->endSection() ?>
 <?= $this->section('scripts') ?>
 <script src="/backend/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<script src="/extra-assets/ckeditor/ckeditor.js"></script>
 <?= $loadJS ?>
 <?= $this->endSection() ?>
