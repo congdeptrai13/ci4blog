@@ -9,8 +9,13 @@ use CodeIgniter\Router\RouteCollection;
 //will enable config for you access through uri matches with controller::method
 // $routes->setAutoRoute('true');
 $routes->get('/', 'BlogController::index');
+$routes->get('post/(:segment)', 'BlogController::readPost/$1', ['as' => 'read-post']);
 
-
+$routes->get('category/(:segment)', 'BlogController::categoryPost/$1', ['as' => 'category-post']);
+$routes->get('tag/(:segment)', 'BlogController::tagPost/$1', ['as' => 'tag-post']);
+$routes->get('search', 'BlogController::searchPost', ['as' => 'search-post']);
+$routes->get('contact-us', 'BlogController::contactUs', ['as' => 'contact-us']);
+$routes->post('contact-us', 'BlogController::contactUsForm', ['as' => 'contact-us-form']);
 
 
 

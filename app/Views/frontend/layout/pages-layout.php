@@ -10,7 +10,7 @@
     <meta name="description" content="This is meta description">
     <meta name="author" content="Themefisher">
     <?= $this->renderSection('page_meta') ?>
-    <link rel="shortcut icon" href="images/blogs/<?= get_settings()->blog_favicon ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/blogs/<?= get_settings()->blog_favicon ?>" type="image/x-icon">
 
     <!-- theme meta -->
     <meta name="theme-name" content="reporter" />
@@ -23,10 +23,10 @@
         rel="stylesheet">
 
     <!-- # CSS Plugins -->
-    <link rel="stylesheet" href="frontend/plugins/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/frontend/plugins/bootstrap/bootstrap.min.css">
 
     <!-- # Main Style Sheet -->
-    <link rel="stylesheet" href="frontend/css/style.css">
+    <link rel="stylesheet" href="/frontend/css/style.css">
     <?= $this->renderSection('stylesheets') ?>
 </head>
 
@@ -46,8 +46,8 @@
     <!-- footer  -->
 
     <!-- # JS Plugins -->
-    <script src="frontend/plugins/jquery/jquery.min.js"></script>
-    <script src="frontend/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="/frontend/plugins/jquery/jquery.min.js"></script>
+    <script src="/frontend/plugins/bootstrap/bootstrap.min.js"></script>
 
     <!-- Main Script -->
     <script src="js/script.js"></script>
